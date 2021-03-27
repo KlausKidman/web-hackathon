@@ -2052,6 +2052,10 @@
     },
     "smart-banner": {
       "open-store-btn": "OPEN"
+    },
+    "games-page": {
+      "all-games": "All games",
+      "my-games": "My games"
     }
   }
 }

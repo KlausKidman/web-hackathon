@@ -40,6 +40,9 @@ import SalesList from '@/vue/pages/sales/SalesList'
 import Requests from '@/vue/pages/Requests'
 import Games from '@/vue/pages/Games'
 
+// import GamesAll from '@/vue/pages/games/GamesAll'
+// import GamesMy from '@/vue/pages/games/GamesMy'
+
 Vue.use(Router)
 
 const router = new Router({
@@ -423,6 +426,20 @@ const router = new Router({
           component: Games,
           meta: { pageNameTranslationId: 'pages-names.games' },
           beforeEnter: inAppRouteGuard,
+          children: [
+            {
+              path: '/my',
+              name: vueRoutes.verification.name,
+              component: Verification,
+              beforeEnter: inAppRouteGuard,
+            },
+            {
+              path: '/all',
+              name: vueRoutes.verification.name,
+              component: Verification,
+              beforeEnter: inAppRouteGuard,
+            },
+          ],
         },
       ],
     },
