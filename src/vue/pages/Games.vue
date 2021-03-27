@@ -5,7 +5,10 @@
         <router-link :to="vueRoutes.gamesAll">
           <span>{{ 'games-page.all-games' | globalize }}</span>
         </router-link>
-        <router-link :to="vueRoutes.gamesMy">
+        <router-link
+          v-if="isAccountCorporate"
+          :to="vueRoutes.gamesMy"
+        >
           <span>{{ 'games-page.my-games' | globalize }}</span>
         </router-link>
       </template>
@@ -15,12 +18,12 @@
       >
         <button
           v-ripple
-          class="assets-page__create-btn app__button-raised"
+          class="app__button-raised"
           @click="isAssetDrawerShown = true"
         >
-          <i class="mdi mdi-plus assets-page__btn-icon" />
+          <i class="mdi mdi-plus game-page__btn-icon" />
           <span>
-            {{ 'assets-page.create-btn' | globalize }}
+            {{ 'games-page.create-btn' | globalize }}
           </span>
         </button>
       </template>
@@ -29,8 +32,10 @@
     <template v-if="isAccountCorporate">
       <drawer :is-shown.sync="isAssetDrawerShown">
         <template slot="heading">
-          {{ 'assets-page.create-asset-title' | globalize }}
+          {{ 'games-page.create-game-title' | globalize }}
         </template>
+
+        <create-game-form />
       </drawer>
     </template>
 
@@ -41,6 +46,7 @@
 <script>
 import TopBar from '@/vue/common/TopBar'
 import Drawer from '@/vue/common/Drawer'
+import CreateGameForm from '@/vue/forms/CreateGameForm'
 
 import { vueRoutes } from '@/vue-router/routes'
 import { mapGetters } from 'vuex'
@@ -51,6 +57,7 @@ export default {
   components: {
     TopBar,
     Drawer,
+    CreateGameForm,
   },
 
   mixins: [],
@@ -67,8 +74,14 @@ export default {
       isAccountCorporate: vuexTypes.isAccountCorporate,
     }),
   },
-
-  methods: {
-  },
 }
 </script>
+<style lang="scss" scoped>
+.game-page__btn-icon {
+  display: flex;
+  font-size: 1.8rem;
+  margin-right: 0.5rem;
+  margin-top: -0.4rem;
+}
+
+</style>

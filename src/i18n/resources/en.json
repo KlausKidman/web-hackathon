@@ -2055,7 +2055,25 @@
     },
     "games-page": {
       "all-games": "All games",
-      "my-games": "My games"
+      "my-games": "My games",
+      "create-btn": "Create",
+      "create-game-title": "Create game"
+    },
+    "create-game-form": {
+      "name-lbl": "Name",
+      "asset-lbl": "Asset",
+      "amount-lbl": "Amount",
+      "name-team-1-lbl": "First team name",
+      "name-team-2-lbl": "Second team name",
+      "player1-lbl": "Player email №1",
+      "player2-lbl": "Player email №2",
+      "player3-lbl": "Player email №3",
+      "player4-lbl": "Player email №4",
+      "player5-lbl": "Player email №5",
+      "team-1-title": "First team",
+      "team-2-title": "Second team",
+      "stream-link-lbl": "Stream link",
+      "create-btn": "Create"
     }
   }
 }
