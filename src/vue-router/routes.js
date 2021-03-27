@@ -52,4 +52,6 @@ export const vueRoutes = Object.freeze({
   atomicSwaps: { name: 'app.atomic-swaps' },
   atomicSwapsExplore: { name: 'app.atomic-swaps-explore' },
   games: { name: 'app.games' },
+  gamesAll: { name: 'app.games-all' },
+  gamesMy: { name: 'app.games-my' },
 })

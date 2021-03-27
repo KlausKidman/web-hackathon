@@ -2,10 +2,10 @@
   <div class="games-page">
     <top-bar>
       <template slot="main">
-        <router-link :to="vueRoutes.assetsExplore">
+        <router-link :to="vueRoutes.gamesAll">
           <span>{{ 'games-page.all-games' | globalize }}</span>
         </router-link>
-        <router-link :to="vueRoutes.assetsExplore">
+        <router-link :to="vueRoutes.gamesMy">
           <span>{{ 'games-page.my-games' | globalize }}</span>
         </router-link>
       </template>
@@ -33,6 +33,8 @@
         </template>
       </drawer>
     </template>
+
+    <router-view />
   </div>
 </template>
 
