@@ -696,7 +696,8 @@
       "register-of-shares": "Register of shares",
       "polls": "Polls",
       "atomic-swaps": "Atomic swaps",
-      "kyc-recovery": "KYC Recovery"
+      "kyc-recovery": "KYC Recovery",
+      "games": "Games"
     },
     "limits": {
       "explore-limits": "Explore limits",

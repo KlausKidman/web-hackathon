@@ -31,6 +31,22 @@
       <section class="sidebar__links-section">
         <nav class="sidebar__links-group">
           <router-link
+            key="games"
+            v-ripple
+            class="sidebar__link"
+            @click.native="closeSidebar"
+            tag="a"
+            :to="vueRoutes.games"
+          >
+            <i
+              class="sidebar__link-icon"
+              :class="`mdi mdi-google-controller`"
+            />
+            <span>
+              {{ 'pages-names.games' | globalize }}
+            </span>
+          </router-link>
+          <router-link
             key="dashboard"
             v-ripple
             class="sidebar__link"

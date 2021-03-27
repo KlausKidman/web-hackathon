@@ -38,6 +38,7 @@ import BalanceExplorerModule from '@modules/assets/balance-explorer'
 import MyAssetsExplorerModule from '@modules/assets/my-assets-explorer'
 import SalesList from '@/vue/pages/sales/SalesList'
 import Requests from '@/vue/pages/Requests'
+import Games from '@/vue/pages/Games'
 
 Vue.use(Router)
 
@@ -415,6 +416,13 @@ const router = new Router({
               beforeEnter: inAppRouteGuard,
             },
           ],
+        },
+        {
+          path: '/games',
+          name: vueRoutes.games.name,
+          component: Games,
+          meta: { pageNameTranslationId: 'pages-names.games' },
+          beforeEnter: inAppRouteGuard,
         },
       ],
     },
