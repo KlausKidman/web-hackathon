@@ -2,17 +2,11 @@
   <div class="game-details">
     <iframe
       class="game-details__frame"
-      src="https://www.youtube.com/embed/36YnV9STBqc"
+      :src="`https://www.youtube.com/embed/${youtubeId}`"
       title="YouTube video player"
       frameborder="0"
-      allow="
-        accelerometer;
-        autoplay;
-        clipboard-write;
-        encrypted-media;
-        gyroscope;
-        picture-in-picture
-      "
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+          gyroscope; picture-in-picture"
       allowfullscreen
     />
 
@@ -20,7 +14,7 @@
       <h2 class="game-details__team-title">
         {{
           'game-details.team1-title' |
-            globalize({ name: assetGame.nameCompetition })
+            globalize({ name: assetGame.team1.name })
         }}
       </h2>
       <h3 class="game-details__team-subtitle">
@@ -43,7 +37,7 @@
       <h2 class="game-details__team-title">
         {{
           'game-details.team2-title' |
-            globalize({ name: assetGame.nameCompetition })
+            globalize({ name: assetGame.team2.name })
         }}
       </h2>
       <h3 class="game-details__team-subtitle">
@@ -61,12 +55,45 @@
         </template>
       </div>
     </div>
+
+    <h2 class="game-details__team-subtitle">
+      Prise
+    </h2>
+    <p class="game-details__team-prise">
+      {{ assetGame.issued | formatMoney }} USD
+    </p>
+
+    <template v-if="isAssetOwner">
+      <h2 class="game-details__team-subtitle">
+        Choose a winner
+      </h2>
+
+      <div class="game-details__actions">
+        <button
+          v-ripple
+          type="button"
+          class="app__button-raised create-poll-form__btn"
+        >
+          {{ assetGame.team1.name }}
+        </button>
+
+        <button
+          v-ripple
+          type="button"
+          class="app__button-raised create-poll-form__btn"
+        >
+          {{ assetGame.team2.name }}
+        </button>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
 
 import { AssetGameRecord } from '@/js/records/entities/asset-game.record'
+import { vuexTypes } from '@/vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'asset-card',
@@ -76,6 +103,24 @@ export default {
   props: {
     assetGame: { type: AssetGameRecord, required: true },
   },
+
+  computed: {
+    ...mapGetters([
+      vuexTypes.accountId,
+    ]),
+
+    youtubeId () {
+      const inputtedValue = this.assetGame.streamLink
+      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|v=)([^#]*).*/
+      const match = inputtedValue.match(regExp)
+      return match ? match[2] : inputtedValue
+    },
+
+    isAssetOwner () {
+      return this.assetGame.organizer === this.accountId
+    },
+  },
+
 }
 </script>
 <style lang="scss" scoped>
@@ -93,6 +138,19 @@ export default {
 
 .game-details__team-subtitle {
   margin: 2rem 0;
+}
+
+.game-details__team-participant {
+  font-size: 1.6rem;
+
+  & + & {
+    margin-top: 0.4rem;
+  }
+}
+
+.game-details__actions {
+  display: flex;
+  justify-content: space-between;
 }
 
 </style>

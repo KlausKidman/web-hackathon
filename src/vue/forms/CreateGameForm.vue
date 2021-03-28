@@ -168,7 +168,7 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { vuexTypes } from '@/vuex'
 import { mapActions, mapGetters } from 'vuex'
-import { required } from '@validators'
+// import { required } from '@validators'
 
 import { MAX_FIELD_LENGTH } from '@/js/const/field-length.const'
 
@@ -200,16 +200,9 @@ export default {
         player4: '',
         player5: '',
       },
-
     },
     MAX_FIELD_LENGTH,
   }),
-
-  validations: {
-    form: {
-      nameCompetition: { required },
-    },
-  },
 
   computed: {
     ...mapGetters([
@@ -225,6 +218,7 @@ export default {
 
   created () {
     this.form.asset = this.transferableBalancesAssets[0]
+    // console.log(this.form.asset)
     this.setAsset()
   },
 

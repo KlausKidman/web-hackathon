@@ -79,10 +79,13 @@ export default {
           page: { limit: 20 },
           filter: {
             types: 3,
-            owner: this.accountId,
           },
         })
         this.games = data.map(item => new AssetGameRecord(item))
+        if (this.accountId) {
+          this.games =
+            this.games.filter(item => item.organizer === this.accountId)
+        }
       } catch (e) {
         this.isLoadFailed = true
         ErrorHandler.processWithoutFeedback()

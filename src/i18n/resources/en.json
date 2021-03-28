@@ -2083,7 +2083,8 @@
     },
     "game-card": {
       "details-lbl": "Details",
-      "details-game-title": "Game details"
+      "details-game-title": "Game details",
+      "vs": "vs"
     },
     "game-details": {
       "team1-title": "First team: {{name}}",

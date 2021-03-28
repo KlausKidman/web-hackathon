@@ -9,6 +9,7 @@ export class AssetGameRecord extends AssetRecord {
     this.date = _get(record, 'details.date')
     this.sourceBalanceId = _get(record, 'details.sourceBalanceId')
     this.streamLink = _get(record, 'details.streamLink')
+    this.organizer = _get(record, 'details.organizer')
 
     this.team1 = {}
     this.team2 = {}
@@ -20,7 +21,7 @@ export class AssetGameRecord extends AssetRecord {
     this.team1.playerEmail4 = _get(record, 'details.team1.player4')
     this.team1.playerEmail5 = _get(record, 'details.team1.player5')
 
-    this.team2.name = _get(record, 'details.team1.name')
+    this.team2.name = _get(record, 'details.team2.name')
     this.team2.playerEmail1 = _get(record, 'details.team2.player1')
     this.team2.playerEmail2 = _get(record, 'details.team2.player2')
     this.team2.playerEmail3 = _get(record, 'details.team2.player3')
