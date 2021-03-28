@@ -2090,6 +2090,10 @@
       "team1-title": "First team: {{name}}",
       "team2-title": "Second team: {{name}}",
       "participants-subtitle": "Participants:"
+    },
+    "game-donat-form": {
+      "asset-lbl": "Asset",
+      "amount-lbl":"Amount"
     }
   }
 }

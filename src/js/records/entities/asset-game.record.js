@@ -10,6 +10,7 @@ export class AssetGameRecord extends AssetRecord {
     this.sourceBalanceId = _get(record, 'details.sourceBalanceId')
     this.streamLink = _get(record, 'details.streamLink')
     this.organizer = _get(record, 'details.organizer')
+    this.winner = _get(record, 'details.winner')
 
     this.team1 = {}
     this.team2 = {}

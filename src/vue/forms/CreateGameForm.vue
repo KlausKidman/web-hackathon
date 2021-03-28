@@ -168,7 +168,6 @@ import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { vuexTypes } from '@/vuex'
 import { mapActions, mapGetters } from 'vuex'
-// import { required } from '@validators'
 
 import { MAX_FIELD_LENGTH } from '@/js/const/field-length.const'
 

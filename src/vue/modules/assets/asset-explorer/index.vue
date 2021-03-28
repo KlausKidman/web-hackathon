@@ -7,9 +7,9 @@
         </p>
       </template>
       <template v-else>
-        <template v-if="assets.length">
+        <template v-if="assetsSorted.length">
           <div class="asset-explorer__card-list">
-            <template v-for="item in assets">
+            <template v-for="item in assetsSorted">
               <asset-card
                 :asset="item"
                 @update-list="updateAssetsList"
@@ -66,6 +66,10 @@ export default {
       vuexTypes.accountBalances,
       vuexTypes.accountBalanceByCode,
     ]),
+
+    assetsSorted () {
+      return this.assets.filter(item => item.assetType !== 3)
+    },
   },
 
   async created () {

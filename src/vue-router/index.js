@@ -504,7 +504,7 @@ function redirectRouteGuard (to, from, next) {
     if (isKycRecoveryInProgress) {
       next(vueRoutes.kycRecoveryManagement)
     } else if (to.name === vueRoutes.app.name) {
-      next(vueRoutes.games)
+      next(vueRoutes.assets)
     } else {
       next()
     }

@@ -26,6 +26,7 @@
             v-if="id1 !== 'name'"
             :key="item1+id1"
             class="game-details__team-participant"
+            :title="item1"
           >
             {{ item1 }}
           </p>
@@ -40,7 +41,7 @@
             globalize({ name: assetGame.team2.name })
         }}
       </h2>
-      <h3 class="game-details__team-subtitle">
+      <h3 class="game-details__team-title">
         {{ 'game-details.participants-subtitle' | globalize }}
       </h3>
       <div class="game-details__team-participants">
@@ -49,6 +50,7 @@
             v-if="id2 !== 'name'"
             :key="item2+id2"
             class="game-details__team-participant"
+            :title="item2"
           >
             {{ item2 }}
           </p>
@@ -56,15 +58,15 @@
       </div>
     </div>
 
-    <h2 class="game-details__team-subtitle">
+    <h2 class="game-details__team-title">
       Prise
     </h2>
-    <p class="game-details__team-prise">
+    <span class="game-details__team-prise">
       {{ assetGame.issued | formatMoney }} USD
-    </p>
+    </span>
 
-    <template v-if="isAssetOwner">
-      <h2 class="game-details__team-subtitle">
+    <template v-if="isAssetOwner && !isHaveWinner">
+      <h2 class="game-details__team-title">
         Choose a winner
       </h2>
 
@@ -72,7 +74,9 @@
         <button
           v-ripple
           type="button"
+          @click="teamWinRequest(assetGame.team1.name)"
           class="app__button-raised create-poll-form__btn"
+          :disabled="isButtonDisabled"
         >
           {{ assetGame.team1.name }}
         </button>
@@ -80,11 +84,29 @@
         <button
           v-ripple
           type="button"
+          @click="teamWinRequest(assetGame.team1.name)"
           class="app__button-raised create-poll-form__btn"
+          :disabled="isButtonDisabled"
         >
           {{ assetGame.team2.name }}
         </button>
       </div>
+    </template>
+
+    <div v-if="!isHaveWinner">
+      <h2 class="game-details__team-title">
+        Donate for winner
+      </h2>
+
+      <game-donat-form
+        :game-coin-id="assetGame.code"
+      />
+    </div>
+
+    <template>
+      <h1 class="game-details__winner">
+        Сongratulations! Winner: {{ winner }}
+      </h1>
     </template>
   </div>
 </template>
@@ -94,14 +116,25 @@
 import { AssetGameRecord } from '@/js/records/entities/asset-game.record'
 import { vuexTypes } from '@/vuex'
 import { mapGetters } from 'vuex'
+import GameDonatForm from '@/vue/pages/games/GameDonatForm'
+import { api } from '@/api'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
   name: 'asset-card',
   components: {
+    GameDonatForm,
   },
 
   props: {
     assetGame: { type: AssetGameRecord, required: true },
+  },
+
+  data () {
+    return {
+      isButtonDisabled: false,
+      isSelectWinner: '',
+    }
   },
 
   computed: {
@@ -118,6 +151,32 @@ export default {
 
     isAssetOwner () {
       return this.assetGame.organizer === this.accountId
+    },
+
+    isHaveWinner () {
+      return this.assetGame.winner || this.isSelectWinner
+    },
+  },
+
+  methods: {
+    async teamWinRequest (teamName) {
+      this.isButtonDisabled = true
+      try {
+        const endpoint = '/integrations/game-service/winner'
+        const params = {
+          data: {
+            attributes: {
+              game_coin_id: this.assetGame.code,
+              team_name: teamName,
+            },
+          },
+        }
+        await api.postWithSignature(endpoint, params)
+        this.isSelectWinner = teamName
+      } catch (e) {
+        ErrorHandler.process(e)
+      }
+      this.isButtonDisabled = false
     },
   },
 
@@ -136,12 +195,15 @@ export default {
   }
 }
 
-.game-details__team-subtitle {
+.game-details__team-title {
   margin: 2rem 0;
 }
 
 .game-details__team-participant {
   font-size: 1.6rem;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   & + & {
     margin-top: 0.4rem;
@@ -152,5 +214,13 @@ export default {
   display: flex;
   justify-content: space-between;
 }
+
+.game-details__team-prise {
+  font-size: 1.8rem;
+}
+
+// .game-details__winner {
+//   color: #0fa005;
+// }
 
 </style>
