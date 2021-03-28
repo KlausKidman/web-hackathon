@@ -35,7 +35,7 @@ export default Object.assign(
     /**
      * App name
      */
-    APP_NAME: 'TokenD',
+    APP_NAME: 'Game',
 
     /**
      * URL of the Horizon server. The application is going to fetch all the

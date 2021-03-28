@@ -44,7 +44,7 @@ import GameDetails from '@/vue/pages/games/GameDetails'
 import { AssetGameRecord } from '@/js/records/entities/asset-game.record'
 
 export default {
-  name: 'asset-card',
+  name: 'game-card',
   components: {
     Card,
     Drawer,
