@@ -60,8 +60,6 @@ export default {
     CreateGameForm,
   },
 
-  mixins: [],
-
   data () {
     return {
       isAssetDrawerShown: false,

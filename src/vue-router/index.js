@@ -135,7 +135,10 @@ const router = new Router({
         {
           path: '/dashboard',
           name: vueRoutes.dashboard.name,
-          meta: { pageNameTranslationId: 'pages-names.dashboard' },
+          meta: {
+            pageNameTranslationId: 'pages-names.dashboard',
+            isDisabled: true,
+          },
           component: Dashboard,
           beforeEnter: inAppRouteGuard,
         },
@@ -145,6 +148,7 @@ const router = new Router({
           meta: {
             pageNameTranslationId: 'pages-names.register-of-shares',
             isCorporateOnly: true,
+            isDisabled: true,
           },
           component: Shares,
           beforeEnter: inAppRouteGuard,
@@ -185,7 +189,10 @@ const router = new Router({
         {
           path: '/sales',
           name: vueRoutes.sales.name,
-          meta: { pageNameTranslationId: 'pages-names.sales' },
+          meta: {
+            pageNameTranslationId: 'pages-names.sales',
+            isDisabled: true,
+          },
           component: Sales,
           beforeEnter: inAppRouteGuard,
           redirect: vueRoutes.investableSales,
@@ -209,6 +216,7 @@ const router = new Router({
                 isUserSales: true,
               },
               meta: {
+
                 isCorporateOnly: true,
               },
               beforeEnter: inAppRouteGuard,
@@ -218,7 +226,10 @@ const router = new Router({
         {
           path: '/sales/:id',
           name: vueRoutes.saleDetails.name,
-          meta: { pageNameTranslationId: 'pages-names.sale-details' },
+          meta: {
+            pageNameTranslationId: 'pages-names.sale-details',
+            isDisabled: true,
+          },
           redirect: to => ({ ...vueRoutes.saleCampaign, params: to.params }),
           component: SaleDetails,
           props: true,
@@ -236,7 +247,10 @@ const router = new Router({
         {
           path: '/polls',
           name: vueRoutes.polls.name,
-          meta: { pageNameTranslationId: 'pages-names.polls' },
+          meta: {
+            pageNameTranslationId: 'pages-names.polls',
+            isDisabled: true,
+          },
           component: Polls,
           beforeEnter: inAppRouteGuard,
           redirect: vueRoutes.allPolls,
@@ -245,6 +259,9 @@ const router = new Router({
               path: '/polls/all',
               name: vueRoutes.allPolls.name,
               props: true,
+              meta: {
+                isDisabled: true,
+              },
               component: PollsAll,
               beforeEnter: inAppRouteGuard,
             },
@@ -254,6 +271,7 @@ const router = new Router({
               props: true,
               component: PollRequestsModule,
               meta: {
+                isDisabled: true,
                 isCorporateOnly: true,
               },
               beforeEnter: inAppRouteGuard,
@@ -263,7 +281,10 @@ const router = new Router({
         {
           path: '/trade',
           name: vueRoutes.trade.name,
-          meta: { pageNameTranslationId: 'pages-names.trade' },
+          meta: {
+            pageNameTranslationId: 'pages-names.trade',
+            isDisabled: true,
+          },
           redirect: vueRoutes.tradeExchange,
           beforeEnter: inAppRouteGuard,
           component: Trade,
@@ -273,11 +294,13 @@ const router = new Router({
             {
               path: '/trade/exchange',
               name: vueRoutes.tradeExchange.name,
+              meta: { isDisabled: true },
               component: _ => import('@/vue/pages/TradeExchange'),
             },
             {
               path: '/trade/my-orders',
               name: vueRoutes.tradeUserOffers.name,
+              meta: { isDisabled: true },
               component: _ => import('@/vue/pages/TradeUserOffers'),
             },
           ],
@@ -350,14 +373,20 @@ const router = new Router({
         {
           path: '/limits',
           name: vueRoutes.limits.name,
-          meta: { pageNameTranslationId: 'pages-names.limits' },
+          meta: {
+            pageNameTranslationId: 'pages-names.limits',
+            isDisabled: true,
+          },
           component: Limits,
           beforeEnter: inAppRouteGuard,
         },
         {
           path: '/fees',
           name: vueRoutes.fees.name,
-          meta: { pageNameTranslationId: 'pages-names.fees' },
+          meta: {
+            pageNameTranslationId: 'pages-names.fees',
+            isDisabled: true,
+          },
           component: Fees,
           beforeEnter: inAppRouteGuard,
         },
@@ -475,7 +504,7 @@ function redirectRouteGuard (to, from, next) {
     if (isKycRecoveryInProgress) {
       next(vueRoutes.kycRecoveryManagement)
     } else if (to.name === vueRoutes.app.name) {
-      next(vueRoutes.dashboard)
+      next(vueRoutes.games)
     } else {
       next()
     }

@@ -1,25 +1,17 @@
 <template>
   <div class="games-all">
-    all
+    <games-list />
   </div>
 </template>
 
 <script>
 
+import GamesList from '@/vue/pages/games/GamesList'
+
 export default {
   name: 'games-all',
   components: {
-  },
-
-  mixins: [],
-
-  data: _ => ({
-  }),
-
-  computed: {
-  },
-
-  methods: {
+    GamesList,
   },
 }
 </script>

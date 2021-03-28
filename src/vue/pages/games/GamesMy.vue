@@ -1,25 +1,25 @@
 <template>
   <div class="games-my">
-    my
+    <games-list :account-id="accountId" />
   </div>
 </template>
 
 <script>
+import GamesList from '@/vue/pages/games/GamesList'
+
+import { mapGetters } from 'vuex'
+import { vuexTypes } from '@/vuex'
 
 export default {
   name: 'games-my',
   components: {
+    GamesList,
   },
-
-  mixins: [],
-
-  data: _ => ({
-  }),
 
   computed: {
-  },
-
-  methods: {
+    ...mapGetters([
+      vuexTypes.accountId,
+    ]),
   },
 }
 </script>

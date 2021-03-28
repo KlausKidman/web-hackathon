@@ -1,20 +1,19 @@
 <template>
-  <div class="balance-explorer">
+  <div class="games-list">
     <template v-if="isLoaded">
       <template v-if="isLoadFailed">
-        <p class="balance-explorer__error-msg">
-          {{ 'assets.loading-error-msg' | globalize }}
+        <p class="games-list__error-msg">
+          {{ 'games-list.loading-error-msg' | globalize }}
         </p>
       </template>
       <template v-else>
-        <template v-if="accountBalances.length">
-          <div class="balance-explorer__card-list">
-            <template v-for="item in accountBalances">
-              <asset-card
-                v-if="item.asset.code === 'USD'"
-                :asset="item.asset"
-                @update-asset="updateAssetsList"
-                :key="item.asset.id"
+        <template v-if="games.length">
+          <div class="games-list__card-list">
+            <template v-for="item in games">
+              <game-card
+                :asset="item"
+                @update-list="updateAssetsList"
+                :key="item.id"
               />
             </template>
           </div>
@@ -22,8 +21,8 @@
         <template v-else>
           <no-data-message
             icon-name="trending-up"
-            :title="'assets.no-balances-title' | globalize"
-            :message="'assets.no-balances-msg' | globalize"
+            :title="'games-list.no-games-title' | globalize"
+            :message="'games-list.no-games-msg' | globalize"
           />
         </template>
       </template>
@@ -36,40 +35,37 @@
 
 <script>
 import NoDataMessage from '@/vue/common/NoDataMessage'
-import AssetCard from '@/vue/modules/assets/shared/components/asset-card'
 import UpdateList from '@/vue/mixins/update-list.mixin'
 import SkeletonCardsLoader from '@/vue/common/skeleton-loader/SkeletonCardsLoader'
+import GameCard from '@/vue/pages/games/GameCard'
 
-import { mapActions, mapGetters } from 'vuex'
-import { vuexTypes } from '@/vuex'
+import { AssetGameRecord } from '@/js/records/entities/asset-game.record'
+import { api } from '@/api'
+
 import { ErrorHandler } from '@/js/helpers/error-handler'
 
 export default {
-  name: 'balance-explorer',
+  name: 'games-list',
   components: {
-    AssetCard,
     NoDataMessage,
     SkeletonCardsLoader,
+    GameCard,
   },
 
   mixins: [UpdateList],
 
+  props: {
+    accountId: { type: String, default: '' },
+  },
+
   data: _ => ({
     isLoaded: false,
     isLoadFailed: false,
+    games: [],
   }),
 
-  computed: {
-    ...mapGetters([
-      vuexTypes.accountId,
-      vuexTypes.defaultQuoteAsset,
-      vuexTypes.accountBalances,
-    ]),
-  },
-
   async created () {
-    await this.load()
-    this.listenUpdateList('assets:updateList', this.load)
+    await this.loadGames()
   },
 
   beforeDestroy () {
@@ -77,22 +73,25 @@ export default {
   },
 
   methods: {
-    ...mapActions({
-      loadAccountBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
-    }),
-
-    async load () {
+    async loadGames () {
       try {
-        await this.loadAccountBalances(this.defaultQuoteAsset)
+        const { data } = await api.getWithSignature('/v3/assets', {
+          page: { limit: 20 },
+          filter: {
+            types: 3,
+            owner: this.accountId,
+          },
+        })
+        this.games = data.map(item => new AssetGameRecord(item))
       } catch (e) {
         this.isLoadFailed = true
-        ErrorHandler.processWithoutFeedback(e)
+        ErrorHandler.processWithoutFeedback()
       }
       this.isLoaded = true
     },
 
     updateAssetsList () {
-      this.emitUpdateList('assets:updateList')
+      this.loadGames()
     },
   },
 }
@@ -101,7 +100,7 @@ export default {
 <style lang="scss" scoped>
 @import '~@/scss/variables';
 
-.balance-explorer__card-list {
+.games-list__card-list {
   display: grid;
   grid-gap: $card-list-grid-gap;
   grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));

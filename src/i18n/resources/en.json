@@ -2073,7 +2073,22 @@
       "team-1-title": "First team",
       "team-2-title": "Second team",
       "stream-link-lbl": "Stream link",
-      "create-btn": "Create"
+      "create-btn": "Create",
+      "date-lbl": "Start date"
+    }, 
+    "games-list": {
+      "loading-error-msg": "There was an error while loading.",
+      "no-games-title": "No games",
+      "no-games-msg": "There are currently no active competitions"
+    },
+    "game-card": {
+      "details-lbl": "Details",
+      "details-game-title": "Game details"
+    },
+    "game-details": {
+      "team1-title": "First team: {{name}}",
+      "team2-title": "Second team: {{name}}",
+      "participants-subtitle": "Participants:"
     }
   }
 }

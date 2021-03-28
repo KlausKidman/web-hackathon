@@ -1,16 +1,17 @@
 <template>
   <form
+    novalidate
     class="app-form create-game-form"
-    @submit.prevent="isFormValid() && showConfirmation()"
+    @submit.prevent="submit"
   >
     <div class="app__form-row">
       <div class="app__form-field">
         <input-field
-          v-model="form.name"
-          name="create-game-form-name"
-          @blur="touchField('form.name')"
+          name="create-game-form-name-competition"
+          @blur="touchField('form.nameCompetition')"
+          v-model="form.nameCompetition"
           :label="'create-game-form.name-lbl' | globalize"
-          :error-message="getFieldErrorMessage('form.name')"
+          :error-message="getFieldErrorMessage('form.nameCompetition')"
           :white-autofill="false"
         />
       </div>
@@ -42,7 +43,7 @@
           v-model="form.amount"
           name="create-game-form-amount"
           validation-type="outgoing"
-          :label="'transfer-form.amount-lbl' | globalize"
+          :label="'create-game-form.amount-lbl' | globalize"
           :asset="transferableBalancesAssets[0]"
           is-max-button-shown
           :readonly="formMixin.isDisabled"
@@ -54,12 +55,26 @@
 
     <div class="app__form-row">
       <div class="app__form-field">
+        <date-field
+          v-model="form.date"
+          :enable-time="true"
+          @input="touchField('form.date')"
+          @blur="touchField('form.date')"
+          name="create-game-form-date"
+          :label="'create-game-form.date-lbl' | globalize"
+          :disabled="formMixin.isDisabled"
+        />
+      </div>
+    </div>
+
+    <div class="app__form-row">
+      <div class="app__form-field">
         <input-field
           v-model="form.streamLink"
-          name="create-game-form-name"
-          @blur="touchField('form.name')"
+          name="create-game-form-stream-link"
+          @blur="touchField('form.streamLink')"
           :label="'create-game-form.stream-link-lbl' | globalize"
-          :error-message="getFieldErrorMessage('form.name')"
+          :error-message="getFieldErrorMessage('form.streamLink')"
           :white-autofill="false"
         />
       </div>
@@ -72,27 +87,27 @@
 
     <div
       class="app__form-row"
-      v-for="(item, key) in form.team1"
-      :key="`team1-${key}`"
+      v-for="(item1, key1) in form.team1"
+      :key="`team1-${key1}`"
     >
       <div class="app__form-field">
-        <template v-if="key === 'name'">
+        <template v-if="key1 === 'name'">
           <input-field
-            v-model="form.team1[key]"
-            :name="`create-game-form-${key}`"
-            @blur="touchField(`form.team1.${key}`)"
-            :label="`create-game-form.${key}-team-1-lbl` | globalize"
-            :error-message="getFieldErrorMessage(`form.name.${key}`)"
+            v-model="form.team1[key1]"
+            :name="`create-game-form-team1-${key1}`"
+            @blur="touchField(`form.team1[${key1}]`)"
+            :label="`create-game-form.${key1}-team-1-lbl` | globalize"
+            :error-message="getFieldErrorMessage(`form.team1[${key1}]`)"
             :white-autofill="false"
           />
         </template>
         <template v-else>
           <input-field
-            v-model="form.team1[key]"
-            :name="`create-game-form-team1-${key}`"
-            @blur="touchField(`form.team1.${key}`)"
-            :label="`create-game-form.${key}-lbl` | globalize"
-            :error-message="getFieldErrorMessage(`form.team1.${key}`)"
+            v-model="form.team1[key1]"
+            :name="`create-game-form-team1-${key1}`"
+            @blur="touchField(`form.team1[${key1}]`)"
+            :label="`create-game-form.${key1}-lbl` | globalize"
+            :error-message="getFieldErrorMessage(`form.team1[${key1}]`)"
             :white-autofill="false"
           />
         </template>
@@ -106,27 +121,27 @@
 
     <div
       class="app__form-row"
-      v-for="(item, key) in form.team2"
-      :key="`team2-${key}`"
+      v-for="(item2, key2) in form.team2"
+      :key="`team2-${key2}`"
     >
       <div class="app__form-field">
-        <template v-if="key === 'name'">
+        <template v-if="key2 === 'name'">
           <input-field
-            v-model="form.team2[key]"
-            :name="`create-game-form-${key}`"
-            @blur="touchField(`form.team2.${key}`)"
-            :label="`create-game-form.${key}-team-2-lbl` | globalize"
-            :error-message="getFieldErrorMessage(`form.name.${key}`)"
+            v-model="form.team2[key2]"
+            :name="`create-game-form-team2-${key2}`"
+            @blur="touchField(`form.team2[${key2}]`)"
+            :label="`create-game-form.${key2}-team-2-lbl` | globalize"
+            :error-message="getFieldErrorMessage(`form.team2[${key2}]`)"
             :white-autofill="false"
           />
         </template>
         <template v-else>
           <input-field
-            v-model="form.team2[key]"
-            :name="`create-game-form-team2-${key}`"
-            @blur="touchField(`form.team2.${key}`)"
-            :label="`create-game-form.${key}-lbl` | globalize"
-            :error-message="getFieldErrorMessage(`form.team2.${key}`)"
+            v-model="form.team2[key2]"
+            :name="`create-game-form-team2-${key2}`"
+            @blur="touchField(`form.team2[${key2}]`)"
+            :label="`create-game-form.${key2}-lbl` | globalize"
+            :error-message="getFieldErrorMessage(`form.team2[${key2}]`)"
             :white-autofill="false"
           />
         </template>
@@ -148,6 +163,8 @@
 
 <script>
 import FormMixin from '@/vue/mixins/form.mixin'
+import { api } from '@/api'
+import { ErrorHandler } from '@/js/helpers/error-handler'
 
 import { vuexTypes } from '@/vuex'
 import { mapActions, mapGetters } from 'vuex'
@@ -158,14 +175,14 @@ export default {
   name: 'create-game-form',
   mixins: [FormMixin],
   data: _ => ({
-    // ownerID
     form: {
-      name: '',
+      nameCompetition: '',
       amount: 0,
       asset: {},
       assetCode: '',
       sourceBalanceId: '',
       streamLink: '',
+      date: '',
       team1: {
         name: '',
         player1: '',
@@ -186,11 +203,13 @@ export default {
     },
     MAX_FIELD_LENGTH,
   }),
+
   computed: {
     ...mapGetters([
       vuexTypes.transferableBalancesAssets,
       vuexTypes.accountBalances,
       vuexTypes.accountBalanceByCode,
+      vuexTypes.accountId,
     ]),
     balance () {
       return +this.accountBalanceByCode(this.form.asset.code).balance
@@ -199,6 +218,7 @@ export default {
 
   created () {
     this.form.asset = this.transferableBalancesAssets[0]
+    this.setAsset()
   },
 
   methods: {
@@ -206,8 +226,45 @@ export default {
       loadCurrentBalances: vuexTypes.LOAD_ACCOUNT_BALANCES_DETAILS,
     }),
 
-    submit () {
-
+    async submit () {
+      if (!await this.isFormValid()) return
+      this.disableForm()
+      try {
+        const endpoint = '/integrations/game-service/create_game'
+        const params = {
+          data: {
+            attributes: {
+              owner_id: this.accountId,
+              name_competition: this.form.nameCompetition,
+              amount: this.form.amount,
+              asset_code: this.form.assetCode,
+              source_balance_id: this.form.sourceBalanceId,
+              stream_link: this.form.streamLink,
+              date: this.form.date,
+              team1: {
+                name: this.form.team1.name,
+                player1: this.form.team1.player1,
+                player2: this.form.team1.player2,
+                player3: this.form.team1.player3,
+                player4: this.form.team1.player4,
+                player5: this.form.team1.player5,
+              },
+              team2: {
+                name: this.form.team2.name,
+                player1: this.form.team2.player1,
+                player2: this.form.team2.player2,
+                player3: this.form.team2.player3,
+                player4: this.form.team2.player4,
+                player5: this.form.team2.player5,
+              },
+            },
+          },
+        }
+        await api.postWithSignature(endpoint, params)
+      } catch (e) {
+        ErrorHandler.process(e)
+      }
+      this.enableForm()
     },
 
     setAsset (payload) {

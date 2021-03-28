@@ -57,6 +57,7 @@ const AMOUNT_VALIDATION_TYPE = {
   outgoing: 'outgoing',
   issuance: 'issuance',
   atomicSwap: 'atomicSwap',
+  outgoingForGame: 'outgoingForGame',
 }
 
 export default {
@@ -121,6 +122,7 @@ export default {
       let result
 
       switch (this.validationType) {
+        case AMOUNT_VALIDATION_TYPE.outgoingForGame:
         case AMOUNT_VALIDATION_TYPE.outgoing:
           result = this.balance
           break
@@ -158,7 +160,10 @@ export default {
     },
   },
   created () {
-    if (this.min && this.min < this.step) {
+    if (this.min &&
+      this.min < this.step &&
+      !AMOUNT_VALIDATION_TYPE.outgoingForGame
+    ) {
       ErrorHandler.processWithoutFeedback(
         new Error('Min value cannot be less than step'))
     }

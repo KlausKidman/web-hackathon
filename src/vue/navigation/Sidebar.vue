@@ -47,6 +47,7 @@
             </span>
           </router-link>
           <router-link
+            v-if="false"
             key="dashboard"
             v-ripple
             class="sidebar__link"
@@ -79,7 +80,7 @@
             </span>
           </router-link>
           <router-link
-            v-if="isAccountCorporate"
+            v-if="false"
             key="register-of-shares"
             v-ripple
             class="sidebar__link"
@@ -112,6 +113,7 @@
             </span>
           </router-link>
           <router-link
+            v-if="false"
             key="sales"
             v-ripple
             class="sidebar__link"
@@ -128,6 +130,7 @@
             </span>
           </router-link>
           <router-link
+            v-if="false"
             key="polls"
             v-ripple
             class="sidebar__link"
@@ -144,6 +147,7 @@
             </span>
           </router-link>
           <router-link
+            v-if="false"
             key="trade"
             v-ripple
             class="sidebar__link"
@@ -193,6 +197,7 @@
             </span>
           </router-link>
           <router-link
+            v-if="false"
             key="limits"
             v-ripple
             class="sidebar__link"
@@ -209,6 +214,7 @@
             </span>
           </router-link>
           <router-link
+            v-if="false"
             key="fees"
             v-ripple
             class="sidebar__link"
